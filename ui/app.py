@@ -112,7 +112,7 @@ body, html {{
     padding: 14px 30px !important;
 }}
 .filter-label {{
-    color: #5a5a8a !important;
+    color: #FFFFFF !important;
     font-size: 9px !important;
     font-family: 'Rajdhani', sans-serif !important;
     letter-spacing: 2px !important;
@@ -267,7 +267,7 @@ input[type=number], input[type=text] {{ color: #111111 !important; background: w
 /* ── Sliders ──────────────────────────────────────────────── */
 .rc-slider-tooltip-inner {{ background: #1a1a3e !important; color: {COLORS['gold']} !important;
     border: 1px solid rgba(201,168,76,0.4) !important; font-weight: 700 !important; font-size: 11px !important; border-radius: 6px !important; }}
-.rc-slider-mark-text {{ color: #5a5a8a !important; }}
+.rc-slider-mark-text {{ color: #FFFFFF !important; }}
 
 /* ── Gráficas ─────────────────────────────────────────────── */
 .js-plotly-plot .plotly, .js-plotly-plot .plotly .main-svg {{ background: transparent !important; }}
@@ -1441,7 +1441,9 @@ dcc.Dropdown(
             players_detail = [{"name": r["short_name"], **{c: r.get(c, 0) for c in detail_cols}}
                                for r in rows_info]
             fig_bars    = bar_skill_comparison(players_detail, detail_cols)
-            fig_scatter = salary_vs_performance(df.head(400))
+            players_ids = [p for p in [pid1, pid2, pid3] if p is not None]
+            df_players = df[df["sofifa_id"].isin(players_ids)].copy()
+            fig_scatter = salary_vs_performance(df_players)
 
             cols = ["short_name", "age", "nationality", "club_name", "league_name",
                     "overall", "potential", "value_eur", "wage_eur", "primary_position"]
@@ -1615,7 +1617,7 @@ dcc.Dropdown(
         return dbc.Col(
             html.Div([
                 html.Div(title, style={
-                    "color": "#5a5a8a",
+                    "color": "#FFFFFF",
                     "fontSize": "9px",
                     "fontFamily": FONT_FAMILY,
                     "letterSpacing": "2px",
@@ -1657,9 +1659,7 @@ dcc.Dropdown(
 
     # ─── Lanzamiento ───────────────────────────────────────────────
 
-    def run(self):
-        import os
-        port = int(os.environ.get("PORT", 8050))
+    def run(self, host: str = "127.0.0.1", port: int = 8050, debug: bool = False):
         print(f"\n Football Scout Analytics · Edición Premium")
-        print(f" Servidor en http://0.0.0.0:{port}/\n")
-        self.app.run(host="0.0.0.0", port=port, debug=False)
+        print(f" Servidor en http://{host}:{port}/\n")
+        self.app.run(host=host, port=port, debug=debug)
