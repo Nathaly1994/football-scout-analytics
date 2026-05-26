@@ -1659,10 +1659,10 @@ dcc.Dropdown(
 
     # ─── Lanzamiento ───────────────────────────────────────────────
 
-def run(self):
-    import os
-    port = int(os.environ.get("PORT", 8050))
-    host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
-    print(f"\n Football Scout Analytics · Edición Premium")
-    print(f" Servidor en http://{host}:{port}/\n")
-    self.app.run(host=host, port=port, debug=False)
+    def run(self):
+        import os
+        port = int(os.environ.get("PORT", 8050))
+        host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
+        print(f"\n Football Scout Analytics · Edición Premium")
+        print(f" Servidor en http://{host}:{port}/\n")
+        self.app.run(host=host, port=port, debug=False)
